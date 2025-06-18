@@ -2,13 +2,17 @@ from playwright.sync_api import Page, BrowserContext, expect, TimeoutError
 import pytest
 
 def test_dynamic_id(page: Page):
-    page.goto("http://uitestingplayground.com/hiddenlayerste")
+    page.goto("http://uitestingplayground.com/textinput")
 
-    green_btn = page.locator("button#greenButton")
-    green_btn.click()
+    query = "Servus"
 
-    with pytest.raises(TimeoutError):
-            green_btn.click(timeout=2000)
+    input = page.get_by_label("Set New Button Name")
+    input.fill(query)
+    btn = page.locator("button.btn-primary")
+    btn.click()
+
+    expect(btn).to_have_text(query)
+
 
 
     home_page = page.locator("//a[text()='Home']")

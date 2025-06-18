@@ -2,15 +2,19 @@ from playwright.sync_api import Page, BrowserContext, expect, TimeoutError
 import pytest
 
 def test_dynamic_id(page: Page):
-    page.goto("http://uitestingplayground.com/hiddenlayerste")
+    page.goto("http://uitestingplayground.com/")
 
-    green_btn = page.locator("button#greenButton")
-    green_btn.click()
+    ajax = page.locator("button#ajaxButton")
+    ajax.click()
 
-    with pytest.raises(TimeoutError):
-            green_btn.click(timeout=2000)
+    para = page.locator("p.Data loaded with AJAX get request.")
 
+    para.wait_for()
 
+    expect(para).to_be_visible()
+
+    expect()
+    
     home_page = page.locator("//a[text()='Home']")
     home_page.click()
 
